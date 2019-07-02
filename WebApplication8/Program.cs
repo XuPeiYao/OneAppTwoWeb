@@ -11,7 +11,16 @@ using Microsoft.Extensions.Logging;
 namespace WebApplication8 {
     public class Program {
         public static void Main(string[] args) {
-            CreateWebHostBuilder(args).Build().Run();
+            var a = WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseUrls("http://*:3000")
+                .Build();
+            var b = WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseUrls("http://*:3001")
+                .Build();
+
+            Task.WaitAll(a.RunAsync(), b.RunAsync());
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
